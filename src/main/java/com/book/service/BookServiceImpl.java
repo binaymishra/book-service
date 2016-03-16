@@ -4,17 +4,24 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.stereotype.Service;
 
+import com.book.service.db.BookRepository;
 
+@Service("bookService")
 public class BookServiceImpl implements BookService {
+  private final AbstractApplicationContext context = new AnnotationConfigApplicationContext(DataBaseConfiguration.class);
 
   private static final Logger LOGGER = Logger.getLogger(BookServiceImpl.class);
 
   @Override
   public List<Book> findAllBooks() {
-    int size = books().size();
+    BookRepository repository = context.getBean(BookRepository.class);
+    int size = repository.fetchAllBooks().size();
     LOGGER.debug(String.format("%d 'Book' record found. ", size));
-    return books();
+    return repository.fetchAllBooks();
   }
 
 @Override
