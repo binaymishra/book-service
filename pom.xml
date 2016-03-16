@@ -43,6 +43,9 @@
 									<mainClass>com.book.service.Application</mainClass>
 								</transformer>
 							</transformers>
+							 <includes>
+							 	src/main/resources/index.html
+							 </includes>
 						</configuration>
 					</execution>
 				</executions>
