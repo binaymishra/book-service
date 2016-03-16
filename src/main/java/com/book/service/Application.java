@@ -103,12 +103,18 @@ public class Application {
           .endRest();
 
           from("direct:createBook")
+          .doTry()
            .bean(BookServiceImpl.class, "createBook(${body})")
+          .doCatch(IllegalArgumentException.class)
+          .setBody(simple("{ ${exception.message} }"))
           .endRest();
 
           from("direct:updateBook")
-          .bean(BookServiceImpl.class, "updateBook(${body})")
-         .endRest();
+          .doTry()
+            .bean(BookServiceImpl.class, "updateBook(${body})")
+          .doCatch(IllegalArgumentException.class)
+          .setBody(simple("{ ${exception.message} }"))
+          .endRest();
         }
       });
 

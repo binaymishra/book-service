@@ -34,8 +34,8 @@ public Book findBookById(final int id) {
 }
   @Override
   public void createBook(final Book book) {
-    if(book == null || book.getId() == 0)
-      throw new IllegalArgumentException("{ Invalid input.}");
+    if(book == null)
+      throw new IllegalArgumentException("Invalid input");
     BookRepository repository = context.getBean(BookRepository.class);
       int id = repository.insertBook(book);
       book.setId(id);
@@ -46,7 +46,7 @@ public Book findBookById(final int id) {
   @Override
   public void updateBook(final Book book) {
     if(book == null || book.getId() == 0)
-      throw new IllegalArgumentException("{ Invalid input.}");
+      throw new IllegalArgumentException("Invalid input.");
     BookRepository repository = context.getBean(BookRepository.class);
     int row = repository.update(book);
     if(row > 0) {
@@ -57,7 +57,7 @@ public Book findBookById(final int id) {
   @Override
   public void removeBookById(final int id) {
     if(id <= 0)
-      throw new IllegalArgumentException("{ Invalid input.}");
+      throw new IllegalArgumentException("Invalid input.");
     BookRepository repository = context.getBean(BookRepository.class);
     int row = repository.delete(id);
     if(row > 0){
