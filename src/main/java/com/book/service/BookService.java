@@ -8,6 +8,6 @@ public interface BookService {
 
   public Book findBookById(final int id);
 
-  public void createBook(final Book book);
+  public Book createBook(final Book book);
 
 }

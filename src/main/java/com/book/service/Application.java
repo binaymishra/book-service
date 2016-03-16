@@ -68,7 +68,10 @@ public class Application {
 
 
           from("direct:findAllBooks")
-          .bean(BookServiceImpl.class, "findAllBooks")
+          .doTry()
+            .bean(BookServiceImpl.class, "findAllBooks")
+          .doCatch(RuntimeException.class)
+          .setBody(simple("{ ${exception.message} }"))
           .endRest();
 
           from("direct:findBookById")

@@ -1,6 +1,5 @@
 package com.book.service;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -19,30 +18,27 @@ public class BookServiceImpl implements BookService {
   @Override
   public List<Book> findAllBooks() {
     BookRepository repository = context.getBean(BookRepository.class);
-    int size = repository.fetchAllBooks().size();
-    LOGGER.debug(String.format("%d 'Book' record found. ", size));
-    return repository.fetchAllBooks();
+    List<Book> books = repository.fetchAllBooks();
+    LOGGER.info(String.format("%d 'Book' record found. ", books.size()));
+    LOGGER.debug(books);
+    return books;
   }
 
 @Override
 public Book findBookById(final int id) {
-  if(id > 0 && id < 6)
-    return  books().get(id - 1);
-  throw new RuntimeException(String.format("Record not found for id = %d.", id));
-}
-
-
-@Override
-public void createBook(final Book book) {
+  BookRepository repository = context.getBean(BookRepository.class);
+  Book book = repository.fetchBookById(id);
+  LOGGER.info(String.format("%d 'Book' record found for id = %d.", book != null? 1 : null, id));
   LOGGER.debug(book);
-  LOGGER.info("Input data is received. need a DB to insert.");
+  return book;
 }
-
-private static List<Book> books(){
-  return Arrays.asList(
-      new Book(1, "Hadoop The Definitive Guide"),
-      new Book(2, "Functional Programming In Java"),
-      new Book(3, "Java SE 8 for the Really Impatient"),
-      new Book(4, "Working Effectively with Legacy Code"),
-      new Book(5, "Java 8 Lambdas Pragmatic Functional Programming"));
-}}
+  @Override
+  public Book createBook(final Book book) {
+    BookRepository repository = context.getBean(BookRepository.class);
+      int id = repository.insertBook(book);
+      book.setId(id);
+      LOGGER.info(String.format("1 record is successfully inserted."));
+      LOGGER.debug(book);
+      return book;
+  }
+}
