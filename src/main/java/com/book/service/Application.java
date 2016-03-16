@@ -46,7 +46,7 @@ public class Application {
             .dataFormatProperty("prettyPrint", "true");
 
           rest("service")
-            .get("book")
+            .get("book/all")
             .produces(MediaType.APPLICATION_JSON)
             .bindingMode(RestBindingMode.json)
             .outType(Book.class)
@@ -60,11 +60,25 @@ public class Application {
           .to("direct:createBook");
 
           rest("service")
+          .put("book")
+          .consumes(MediaType.APPLICATION_JSON)
+          .bindingMode(RestBindingMode.json)
+          .type(Book.class)
+          .to("direct:updateBook");
+
+          rest("service")
           .get("book/{id}")
           .produces(MediaType.APPLICATION_JSON)
           .bindingMode(RestBindingMode.json)
           .outType(Book.class)
           .to("direct:findBookById");
+
+          rest("service")
+          .delete("book/{id}")
+          .produces(MediaType.APPLICATION_JSON)
+          .bindingMode(RestBindingMode.json)
+          .outType(Book.class)
+          .to("direct:deleteBookById");
 
 
           from("direct:findAllBooks")
@@ -81,9 +95,20 @@ public class Application {
           .setBody(simple("{ ${exception.message} }"))
           .endRest();
 
+          from("direct:deleteBookById")
+          .doTry()
+            .bean(BookServiceImpl.class, "removeBookById(${header.id})")
+          .doCatch(RuntimeException.class)
+          .setBody(simple("{ ${exception.message} }"))
+          .endRest();
+
           from("direct:createBook")
            .bean(BookServiceImpl.class, "createBook(${body})")
           .endRest();
+
+          from("direct:updateBook")
+          .bean(BookServiceImpl.class, "updateBook(${body})")
+         .endRest();
         }
       });
 

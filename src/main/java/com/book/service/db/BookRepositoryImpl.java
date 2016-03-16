@@ -20,8 +20,11 @@ import com.book.service.Book;
 @Repository("bookRepository")
 public class BookRepositoryImpl implements BookRepository {
 
-  private static final String ALL_BOOK_SQL = "SELECT ID, NAME FROM BOOK";
-  private static final String BOOK_BY_ID_SQL = "SELECT ID, NAME FROM BOOK WHERE ID = ?";
+  private static final String BOOK_BY_ID_SQL  = "SELECT ID, NAME FROM BOOK WHERE ID = ?";
+  private static final String BOOK_UPDATE_SQL = "UPDATE BOOK SET NAME = ? WHERE ID = ?";
+  private static final String BOOK_DELETE_SQL = "DELETE FROM BOOK WHERE ID = ?";
+  private static final String ALL_BOOK_SQL    = "SELECT ID, NAME FROM BOOK";
+
 
   private JdbcTemplate template;
   private SimpleJdbcInsert insertTemplate;
@@ -67,6 +70,20 @@ public class BookRepositoryImpl implements BookRepository {
     parameters.put("NAME", book.getName());
     final int id = insertTemplate.executeAndReturnKey(parameters).intValue();
     return id;
+  }
+
+  @Override
+  @Transactional
+  public int update(final Book book) {
+    return template.update(BOOK_UPDATE_SQL,
+        book.getName(),
+        book.getId());
+  }
+
+  @Override
+  @Transactional
+  public int delete(final int id) {
+    return template.update(BOOK_DELETE_SQL, id);
   }
 
 }
