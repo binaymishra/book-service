@@ -6,12 +6,73 @@
 <title>Home</title>
 <style type="text/css">
 body {
-	font-family: Ubuntu Mono;
+	font-family: Consolas;
 	font-size: 1rem;
 }
 </style>
 </head>
 <body>
-	Hello Vinay ! Is it working ?
+	<h2>Book REST Webservice Description.</h2>
+	<table border="1">
+		  <tr>
+		   <th>Service Name</th>
+		   <th>Method</th>
+		   <th>End Point</th>
+		   <th>Description</th>
+		    <th>Important Note</th>
+		  </tr>
+		  <tr>
+		    <td>All Book</td>
+		    <td>GET</td>
+		     <td>
+		     	<a href="http://localhost:9090/service/book/all">
+		     		http://localhost:9090/service/book/all
+		     	</a>
+		     </td>
+		    <td>This End point provides all data.</td>
+		    <td> NOTE : May give no output if there is no data.</td>
+		  </tr>
+		  
+		   <tr>
+		    <td>Get Book By Id</td>
+		    <td>GET</td>
+		     <td>
+		     	<a href="http://localhost:9090/service/book/1">
+		     		http://localhost:9090/service/book/{id}
+		     	</a>
+		     </td>
+		    <td>This End point provides single record data according to {id} given in url.</td>
+		    <td> NOTE : The URL only display record for id 7. only</td>
+		  </tr>
+		   <tr>
+		    <td>Create new Book Record</td>
+		    <td>POST</td>
+		     <td>
+		     	http://localhost:9090/service/book
+		     </td>
+		    <td>Example : { "name" : "Mastering Apache Spark" }</td>
+		     <td> NOTE : Should use a REST client. !</td>
+		  </tr>
+		  <tr>
+		    <td>Update Existing Book Record</td>
+		    <td>PUT</td>
+		     <td>
+		     	http://localhost:9090/service/book
+		     </td>
+		    <td>Example : { "id" : 1, "name" : "Mastering Apache Spark_Update" }</td>
+		    <td>NOTE : Should use a REST client. !</td>
+		  </tr>
+		  <tr>
+		    <td>Delete Existing Book By Id</td>
+		    <td>DELETE</td>
+		     <td>
+		     	http://localhost:9090/service/book/{id}
+		     </td>
+		    <td>Example : { "id" : 1, "name" : "Mastering Apache Spark_Update" }</td>
+		    <td> NOTE : Should use a REST client. !</td>
+		  </tr>
+	</table>
+	
+	<a href="http://localhost:9090">Back</a>
 </body>
 </html>
