@@ -64,4 +64,9 @@ public Book findBookById(final int id) {
       LOGGER.debug(repository.fetchBookById(id) +" is removed.");
     }
   }
+
+  public String index(){
+    ApplicationResource resource = context.getBean(ApplicationResource.class);
+    return resource.indexPage();
+  }
 }

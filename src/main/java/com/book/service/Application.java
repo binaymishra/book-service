@@ -1,12 +1,5 @@
-package com.book.service;
+    package com.book.service;
 
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-
-import org.apache.camel.Exchange;
-import org.apache.camel.Message;
-import org.apache.camel.Processor;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.main.Main;
 import org.apache.camel.model.rest.RestBindingMode;
@@ -27,15 +20,10 @@ public class Application {
 
           from("jetty:http://0.0.0.0:9090")
             .streamCaching()
-            .process(new Processor() {
-              @Override
-              public void process(final Exchange exchange) throws Exception {
-                final Message message = exchange.getOut();
-                String contents = new String(Files.readAllBytes(Paths.get("./src/main/resources/index.html")),
-                    StandardCharsets.UTF_8);
-                message.setBody(contents, String.class);
-              }
-            }).log("${body}")
+            .doTry()
+              .bean(BookServiceImpl.class, "index")
+            .doCatch(RuntimeException.class)
+            .setBody(simple("{ ${exception.message} }"))
             .end();
 
           restConfiguration("jetty")

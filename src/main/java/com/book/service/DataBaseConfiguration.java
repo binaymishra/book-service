@@ -31,4 +31,9 @@ public class DataBaseConfiguration {
       return new DataSourceTransactionManager(dataSource());
     }
 
+    @Bean
+    public ApplicationResource loadIndex(){
+      return new ApplicationResource();
+    }
+
 }
