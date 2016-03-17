@@ -29,8 +29,8 @@ public class Application {
           restConfiguration("jetty")
             .host("0.0.0.0")
             .port(9090)
-            .bindingMode(RestBindingMode.off)
             .enableCORS(true)
+            .bindingMode(RestBindingMode.off)
             .dataFormatProperty("prettyPrint", "true");
 
           rest("service")
